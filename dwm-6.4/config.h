@@ -92,7 +92,7 @@ typedef struct {
 const char *spcmd1[] = {"kitty", "--name", "spterm","--class","spterm", NULL };
 const char *spcmd2[] = {"kitty", "--name", "noteapp","--class","noteapp", NULL };
 const char *spcmd3[] = {"st","-n","music","-g","144x41","-e","mplayer","\"$(ls ~/Music/Song/* | fzf)\"", NULL };
-const char *spcmd4[] = {"brave-browser","--class=Bravescratch","--window-size=1200,700", NULL };
+const char *spcmd4[] = {"brave-browser","--class=Bravescratch","--user-data-dir=/home/safal/.config/brave-scratch","--window-size=1200,700", NULL };
 static Sp scratchpads[] = {
  /* name          cmd  */
  {"spterm",      spcmd1},
@@ -134,6 +134,8 @@ static const Rule rules[] = {
     { "code",            "code",            NULL,                  1<<1,         0,           -1 },
     { "Brave-browser",   "brave-browser",   "Sign in - Google Accounts - Brave", 1,  1,           -1 },
     { NULL,              NULL,              "Picture in picture",      1,            1,           -1 },
+    { "htopfloat",       "htopfloat",       NULL,                      0,            1,           -1 },
+    { "Pavucontrol",     NULL,              NULL,                      0,            1,           -1 },
 
 
 };
@@ -194,6 +196,14 @@ static const Key keys[] = {
   { Mod4Mask,                   XK_d,                     togglescratch,  {.ui = 3 } },
   { Mod4Mask,                   XK_n,                     togglescratch,  {.ui = 1 } },
   { Mod4Mask,                   XK_f,                     togglescratch,  {.ui = 2 } },
+
+	/* New bindings (Super = Mod4) */
+	{ Mod4Mask,                   XK_Return, spawn,          {.v = (const char*[]){"kitty",NULL} } },
+	{ Mod4Mask,                   XK_r,      spawn,          {.v = (const char*[]){"rofi","-show","drun",NULL} } },
+	{ Mod4Mask,                   XK_t,      spawn,          {.v = (const char*[]){"pavucontrol",NULL} } },
+	{ Mod4Mask,                   XK_w,      killclient,     {0} },
+	{ Mod4Mask,                   XK_h,      spawn,          {.v = (const char*[]){"kitty","--class","htopfloat","-e","htop",NULL} } },
+	{ Mod4Mask,                   XK_q,      spawn,          {.v = (const char*[]){ "/usr/bin/bash", "-c","choice=$(echo -e 'Lock\\nLogout\\nReboot\\nShutdown\\nSuspend' | rofi -dmenu -p 'Power'); case \"$choice\" in Lock) xset s activate;; Logout) pkill -KILL -u \"$USER\";; Reboot) systemctl reboot;; Shutdown) systemctl poweroff;; Suspend) systemctl suspend;; esac", NULL } }},
 
 
 	{ Mod4Mask|ShiftMask,     		XK_s, 	   spawn,          {.v = (const char*[]){ "/usr/bin/bash", "-c","~/scripts/scrsht c", NULL } }},
