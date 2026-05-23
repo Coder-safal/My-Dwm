@@ -1,0 +1,14 @@
+# build artifacts
+*.o
+dwm-6.4/dwm
+luke-smith-st/st
+dmenu-5.2/dmenu
+dmenu-5.2/stest
+slstatus/slstatus
+
+# release tarballs from suckless makefiles
+*.tar.gz
+
+# editor backups
+*~
+.*.swp
