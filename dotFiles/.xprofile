@@ -1,0 +1,19 @@
+
+echo "xprofile loaded" >> /tmp/xprofile.log
+export CHROME_EXECUTABLE=/usr/bin/brave-browser
+
+# disable touch pad while typing
+syndaemon -K -i 0.5 -R -d &
+
+setxkbmap -option caps:escape &
+# picom --backend xrender --vsync --no-fading-openclose --no-fading-destroyed  &
+# run slstatus
+slstatus &
+#syncthing &
+/home/tester/.screenlayout/left_monitor.sh &
+dunst &
+copyq &
+/usr/lib/x86_64-linux-gnu/libexec/kdeconnectd &
+/home/tester/scripts/bgchange &
+pactl set-default-sink $(pactl list sinks | grep Name | awk -F ': ' '{print $2}' | grep pci) &
+wmname LG3D &

@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+picom --backend glx --vsync &
+setxkbmap -option caps:escape &

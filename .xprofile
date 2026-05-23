@@ -1,0 +1,5 @@
+slstatus &
+copyq &
+exec --no-startup-id xinput set-prop 8 "libinput Tapping Enabled" 1 &
+exec --no-startup-id xinput set-prop 8 "libinput Click Method Enabled" 0 1 &
+~/scripts/bgchange
