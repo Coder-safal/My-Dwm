@@ -177,6 +177,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_e, 	   spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_r, 	   spawn,          {.v = brave } },
 	{ MODKEY,                       XK_y, 	   spawn,          {.v = (const char*[]){"google-chrome",NULL} } },
+	{ MODKEY,                       XK_v, 	   spawn,          {.v = (const char*[]){"code",NULL} } },
 	{ Mod4Mask,           			XK_e, 	   spawn,          {.v = fileexp } },
 
 	{ Mod4Mask,     				XK_c, 	   spawn,          {.v = clipboard } },
