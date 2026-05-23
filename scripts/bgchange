@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+mapfile -d '' -t wallpapers < <(find ~/Pictures/wallpaper/ -type f -print0 | grep -zEi '\.(png|jpe?g)$')
+
+if [[ ${#wallpapers[@]} -eq 0 ]]; then
+  echo "No wallpapers found."
+  exit 1
+fi
+
+index=$((10#$(date +%S) % ${#wallpapers[@]}))
+random_wallpaper="${wallpapers[$index]}"
+
+feh --bg-fill "$random_wallpaper"
+
+cp "$random_wallpaper" "/home/tester/.config/BraveSoftware/Brave-Browser/Default/sanitized_background_images/wallpaper.png"
