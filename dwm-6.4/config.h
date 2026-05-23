@@ -90,13 +90,15 @@ typedef struct {
  const void *cmd;
 } Sp;
 const char *spcmd1[] = {"kitty", "--name", "spterm","--class","spterm", NULL };
-const char *spcmd2[] = {"kitty", "--name", "noteapp","--class","noteapp","-e", "vim", "/tmp/node.md", NULL };
+const char *spcmd2[] = {"kitty", "--name", "noteapp","--class","noteapp", NULL };
 const char *spcmd3[] = {"st","-n","music","-g","144x41","-e","mplayer","\"$(ls ~/Music/Song/* | fzf)\"", NULL };
+const char *spcmd4[] = {"brave-browser","--class=Bravescratch","--window-size=1200,700", NULL };
 static Sp scratchpads[] = {
  /* name          cmd  */
  {"spterm",      spcmd1},
  {"noteapp",     spcmd2},
  {"music",       spcmd3},
+ {"bravescratch",spcmd4},
 };
 
 
@@ -121,13 +123,14 @@ static const Rule rules[] = {
 	{ "Nemo",			 "nemo",            NULL,                      1<<2,         0,           -1 },
 	{ "vlc",             "vlc",             NULL,                      1<<6,         0,           -1 },
 	{ "Insomnia",        "insomnia",        NULL,                      1<<4,         0,           -1 },
-	{ "St",              "st",              "terminal",                1<<3,         0,           -1 },
-    { "kitty",           "kitty",           "terminal",                1<<3,         0,           -1 },
+	{ "St",              "st",              NULL,                      1<<3,         0,           -1 },
+    { "kitty",           "kitty",           NULL,                      1<<3,         0,           -1 },
 	{ "XClock",          "xclock",			NULL,				       127, 		 1 , 		  -1 },
 	{ "Upwork",           NULL,				NULL,                      1<<3,         0,           -1 },
     { "spterm",          "spterm",          NULL,                      SPTAG(0),     1,           -1 },
     { "noteapp",         "noteapp",         NULL,                      SPTAG(1),     1,           -1 },
     { NULL,              "music",           NULL,                      SPTAG(2),     1,           -1 },
+    { "Bravescratch",    NULL,              NULL,                      SPTAG(3),     1,           -1 },
     { "code",            "code",            NULL,                  1<<1,         0,           -1 },
     { "Brave-browser",   "brave-browser",   "Sign in - Google Accounts - Brave", 1,  1,           -1 },
     { NULL,              NULL,              "Picture in picture",      1,            1,           -1 },
@@ -188,7 +191,8 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,          	XK_z, 	   spawn,          {.v = transparency_dec } },
 
   { Mod4Mask,                   XK_s,                     togglescratch,  {.ui = 0 } },
-  { Mod4Mask,                   XK_d,                     togglescratch,  {.ui = 1 } },
+  { Mod4Mask,                   XK_d,                     togglescratch,  {.ui = 3 } },
+  { Mod4Mask,                   XK_n,                     togglescratch,  {.ui = 1 } },
   { Mod4Mask,                   XK_f,                     togglescratch,  {.ui = 2 } },
 
 
