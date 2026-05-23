@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+function _start(){
+
+    base_dir="/home/tester/Pictures/TimeLapse"
+
+    delay=1
+
+    year=$(date +%Y)
+    month=$(date +%m)
+    day=$(date +%d)
+
+    dir="$base_dir/$year/$month/$day"
+
+    mkdir -p "$dir"
+    dim=$(xdpyinfo | grep dimensions | awk '{print $2;}')
+#    #dunstify -a "screenrecording.." -u low -r "9"  -i "~/Pictures/icons/rec.png" "Recording on progress"
+#    book_mark_path="/home/tester/.config/gtk-3.0"
+#    total=$(cat "$book_mark_path/bookmarks"| wc -l)
+#    cat "$book_mark_path/bookmarks"  | head "-$total" | tee "$book_mark_path/bookmarks"
+#    echo "file://$dir" | tee -a "$book_mark_path/bookmarks"
+
+    while true; do
+
+        mkdir -p "$dir"
+        filename="$dir/$(date +%H_%M_%S).jpg"
+        ffmpeg -f x11grab -s "$dim"  -i :0.0 -vframes 1 "$filename" &>/dev/null
+        sleep $delay
+    done
+}
+
+
+_start
