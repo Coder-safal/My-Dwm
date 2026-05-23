@@ -37,10 +37,10 @@ This is the recommended path for a fresh machine. It does everything for you.
 ```bash
 sudo apt update
 sudo apt install -y git
-git clone https://github.com/<your-github-username>/My-Dwm.git ~/My-Dwm
+git clone https://github.com/Coder-safal/My-Dwm.git ~/My-Dwm
 ```
 
-> Replace `<your-github-username>` with the actual repo URL. If you copied the folder by USB/scp instead, just make sure it ends up at `~/My-Dwm` (i.e. `/home/<you>/My-Dwm`).
+> If you copied the folder by USB/scp instead, just make sure it ends up at `~/My-Dwm` (i.e. `/home/<you>/My-Dwm`).
 
 ### Step 2 — Open the install script and fix two lines
 
