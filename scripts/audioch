@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+
+_togglemute(){
+    for id in $(pactl list short sinks | awk '{print$1}'); do
+       pactl set-sink-mute $id toggle
+    done;
+}
+
+_switchport(){
+    name=$(pactl list sinks | awk -F':' '/RUNNING/{flag=1} flag && /Active Port/{exit} flag && /Ports:/{p=1; next} p && NF>0 && !/^[[:space:]]*$/{gsub(/^[[:space:]]+/, ""); print $1}' | sort -u | dmenu -p "Port:" -i -l 10) && \
+    for id in $(pactl list short sinks | awk '{print $1}'); do
+        pactl set-sink-port "$id" "$name" 2>/dev/null
+    done
+}
+
+_switchch(){
+    check=$(pactl list short sinks | grep mono_audio)
+    if [ -z "$check" ]; then
+        master=$(pactl get-default-sink)
+        echo "$master"
+        pactl load-module module-remap-sink sink_name=mono_audio master="$master" channels=1 channel_map=mono
+    fi
+    pactl list short sinks | grep -v "loop" | awk '{print $2"    "$4"    "$5}' | dmenu -p "Select Audio Channel [name|bitrate|channel]" -i -l 4 | awk '{print $1}' | xargs -I{} pactl set-default-sink {}
+}
+case $1 in
+	"p" )_switchport;;
+	"c") _switchch;;
+	"m") _togglemute;;
+esac
