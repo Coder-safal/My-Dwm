@@ -1,0 +1,89 @@
+#!/usr/bin/bash
+
+function volume() {
+
+    pactl set-sink-volume @DEFAULT_SINK@ $1
+    volume=$(pactl get-sink-volume @DEFAULT_SINK@ | awk -F'/' '/Volume/ {gsub(/ /,""); print $2;}')
+    dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "$HOME/Pictures/icons/sound.png" "Volume:  ${volume}%" -t 2000 &
+}
+
+function brightness() {
+    brigt=$(cat /sys/class/backlight/intel_backlight/brightness)
+    brigt=$(($brigt+$1))
+    echo "$brigt" | tee /sys/class/backlight/intel_backlight/brightness &>/dev/null || brigt=$(($brigt-$1))
+    dunstify -a "changebrightness" -u low -r "9992" -h double:value:$brigt -i "$HOME/Pictures/icons/brightness.png" "Brightness:$(($brigt*100/7500))%" -t 2000 &
+}
+
+function media_control(){
+
+    ACTION="$1"
+    if [[ -z "$ACTION" ]]; then
+        exit 1
+    fi
+    case "$ACTION" in
+        next)
+            METHOD="Next"
+            ;;
+        prev|previous)
+            METHOD="Previous"
+            ;;
+        pause|playpause|toggle)
+            METHOD="PlayPause"
+            ;;
+        *)
+            exit 1
+            ;;
+    esac
+
+    PLAYERS=$(busctl --user list | awk '/org\.mpris\.MediaPlayer2\.brave/ {print $1}')
+
+    if [[ -z "$PLAYERS" ]]; then
+        echo "No Brave media players found."
+        exit 1
+    fi
+
+    for PLAYER in $PLAYERS; do
+        echo "Player: $PLAYER"
+
+        if [[ "$METHOD" == "Next" ]]; then
+            # query PlaybackStatus
+            STATUS=$(dbus-send --print-reply --dest="$PLAYER" \
+                /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get \
+                string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus' \
+                | awk -F'"' '/variant/ {print $2}')
+
+            echo "PlaybackStatus: $STATUS"
+
+            if [[ "$STATUS" == "Paused" ]]; then
+                echo "Resume the playback."
+                dbus-send --print-reply --dest="$PLAYER" /org/mpris/MediaPlayer2 \
+                    org.mpris.MediaPlayer2.Player.PlayPause
+            elif [[ "$STATUS" == "Playing" ]]; then
+                echo "Next track."
+                dbus-send --print-reply --dest="$PLAYER" /org/mpris/MediaPlayer2 \
+                    org.mpris.MediaPlayer2.Player.Next
+            fi
+        else
+            echo "Perfermoning $METHOD"
+            dbus-send --print-reply --dest="$PLAYER" /org/mpris/MediaPlayer2 \
+                "org.mpris.MediaPlayer2.Player.$METHOD"
+        fi
+
+    done
+
+}
+
+case $1 in
+    "vup" ) volume +2%
+        ;;
+    "vdown" ) volume -2%
+        ;;
+    # "bup" )  brightness 100
+    #     ;;
+    # "bdown" )  brightness -100
+    #     ;;
+    "bup" )  media_control next
+        ;;
+    "bdown" )  media_control prev
+        ;;
+esac
