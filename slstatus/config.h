@@ -9,6 +9,14 @@ static const char unknown_str[] = "n/a";
 /* maximum output string length */
 #define MAXLEN 2048
 
+/* === Per-device names ======================================================
+ * Change these two lines when moving this config to a new machine.
+ *   BATTERY    : ls /sys/class/power_supply/   (e.g. BAT0, BAT1)
+ *   WIFI_IFACE : ls /sys/class/net/            (e.g. wlan0, wlp1s0, wlp0s20f3)
+ * ========================================================================== */
+#define BATTERY    "BAT1"
+#define WIFI_IFACE "wlp0s20f3"
+
 
 /*
  * function            description                     argument (example)
@@ -66,9 +74,10 @@ static const struct arg args[] = {
     { run_command, " |V%4s|", "pactl get-sink-volume @DEFAULT_SINK@ | awk -F'/' '/Volume/ {gsub(/ /,\"\"); print $2; exit}'" },
     { cpu_perc, "C%3s%%|", NULL},
     { ram_free, "%s|", NULL},
-    { battery_state, "%s|","BAT0"},
+    { battery_perc,  "%s%%", BATTERY },
+    { battery_state, "%s|",  BATTERY },
     { datetime, "%s|",   "%I:%M.%b.%d" },
-    // { wifi_perc,"%2s |","wlp1s0"},
-    {netspeed_rx,"[%5s/","wlp1s0"},
-    {netspeed_tx,"%5s] ","wlp1s0"},
+    // { wifi_perc,"%2s |",WIFI_IFACE},
+    { netspeed_rx, "[%5s/", WIFI_IFACE },
+    { netspeed_tx, "%5s] ", WIFI_IFACE },
 };
