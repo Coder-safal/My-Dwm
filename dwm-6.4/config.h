@@ -128,7 +128,7 @@ static const Rule rules[] = {
     { "spterm",          "spterm",          NULL,                      SPTAG(0),     1,           -1 },
     { "noteapp",         "noteapp",         NULL,                      SPTAG(1),     1,           -1 },
     { NULL,              "music",           NULL,                      SPTAG(2),     1,           -1 },
-    { "VSCodium",        "vscodium",            NULL,                  1<<1,         0,           -1 },
+    { "code",            "code",            NULL,                  1<<1,         0,           -1 },
     { "Brave-browser",   "brave-browser",   "Sign in - Google Accounts - Brave", 1,  1,           -1 },
     { NULL,              NULL,              "Picture in picture",      1,            1,           -1 },
 
