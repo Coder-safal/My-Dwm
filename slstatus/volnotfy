@@ -1,0 +1,8 @@
+#!/bin/bash
+
+function send_notification() {
+	volume=$(pactl get-sink-volume @DEFAULT_SINK@ | head -1 | awk -F '/' '{print $2}' | grep -Eo "[0-9]+")
+	dunstify -a "changevolume" -u low -r 9993 -h "int:value:$volume" -i "$HOME/Pictures/icons/sound.png" -t 2000 "a"
+}
+
+send_notification
